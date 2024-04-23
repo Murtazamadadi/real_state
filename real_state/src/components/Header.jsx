@@ -1,9 +1,11 @@
 import { FaSearch } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 
 
 export default function Header() {
-
+  const {currentUser}=useSelector((state)=>state.user)
+  // console.log(currentUser)
 
  
   return (
@@ -38,10 +40,14 @@ export default function Header() {
               درباره ما
             </li>
           </Link>
-          <Link to='/sign-in'>
+          <Link to='/profile'>
+            {currentUser? (
+              <img src={currentUser.avatar} alt='profile' className=' rounded-full h-7 w-7 object-cover'/>
+            ):(
             <li className='hidden sm:inline text-slate-700 hover:underline'>
               ورود
             </li>
+            )}
           </Link>
         </ul>
       </div>
