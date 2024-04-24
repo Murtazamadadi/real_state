@@ -18,13 +18,14 @@ export default function Profile() {
   const [fileUploadError, setFileUploadError] = useState(false);
   const [formData, setFormData] = useState({});
 
-
-   // firebase storage
+  // ====================== profile image uploading step -3
+  // firebase storage
   // allow read;
   // allow write: if
   // request.resource.size < 2 * 1024 * 1024 &&
   // request.resource.contentType.matches('image/.*')
-
+  
+  // ====================== profile image uploading step -4
   useEffect(() => {
     if (file) {
       handleFileUpload(file);
@@ -59,19 +60,22 @@ export default function Profile() {
     <div className='p-3 max-w-lg mx-auto'>
       <h1 className='text-3xl font-semibold text-center my-7'>پروفایل</h1>
       <form className='flex flex-col gap-4'>
+        {/* =================================== profile image uploading step -1 */}
         <input
             onChange={(e) => setFile(e.target.files[0])}
             type='file'
             ref={fileRef}
             hidden
             accept='image/*'
-          />
+        />
+          {/* ================================= profile image uploading step -2 */}
         <img
           onClick={()=>fileRef.current.click()} 
           src={formData.avatar || currentUser.avatar}
           alt='profile'
           className='rounded-full h-24 w-24 object-cover cursor-pointer self-center mt-2'
         />
+          {/* ================================= profile image uploading step -5 */}
         <p className='text-sm self-center'>
           {fileUploadError ? (
             <span className='text-red-700'>
