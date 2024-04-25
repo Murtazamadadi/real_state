@@ -9,6 +9,10 @@ import {
 import { app } from '../firebase';
 //========================================================= after user update
 import {updateUserStart,updateUserSuccess,updateUserFailure} from "../redux/slicer/userSlicer"
+//========================================================= after user delet user
+import { deleteUserStart,deleteUserSuccess,deleteUserFailure } from '../redux/slicer/userSlicer';
+//========================================================= after user signout 
+import { signOutUserStart } from "../redux/slicer/userSlicer";
 
 export default function Profile() {
   const { currentUser,loading,error} = useSelector((state) => state.user);
@@ -89,7 +93,41 @@ export default function Profile() {
       dispatch(updateUserFailure(error.message));
     }
   };
- 
+
+  // =================================================== user delete handler function
+  const handleDeleteUser = async () => {
+    try {
+      dispatch(deleteUserStart());
+      const res = await fetch(`/api/user/delete/${currentUser._id}`, {
+        method: 'DELETE',
+      });
+      const data = await res.json();
+      if (data.success === false) {
+        dispatch(deleteUserFailure(data.message));
+        return;
+      }
+      dispatch(deleteUserSuccess(data));
+    } catch (error) {
+      dispatch(deleteUserFailure(error.message));
+    }
+  };
+
+  // =================================================== user logout handler function
+  const handleSignOut = async () => {
+    try {
+      dispatch(signOutUserStart());
+      const res = await fetch('/api/auth/signout');
+      const data = await res.json();
+      if (data.success === false) {
+        dispatch(deleteUserFailure(data.message));
+        return;
+      }
+      dispatch(deleteUserSuccess(data));
+    } catch (error) {
+      dispatch(deleteUserFailure(error.message));
+    }
+  };
+  
   return (
     <div className='p-3 max-w-lg mx-auto'>
       <h1 className='text-3xl font-semibold text-center my-7'>پروفایل</h1>
@@ -157,10 +195,12 @@ export default function Profile() {
 
 
       <div className='flex justify-between mt-5'>
-        <span className='text-red-700 cursor-pointer'>
+        {/* ===================================================== user delte functionality */}
+        <span className='text-red-700 cursor-pointer' onClick={handleDeleteUser}>
           حذف حساب کاربری
         </span>
-        <span className='text-red-700 cursor-pointer'>
+        {/* ===================================================== user logout functionality */}
+        <span className='text-red-700 cursor-pointer' onClick={handleSignOut}>
           خارج شدن
         </span>
       </div>
