@@ -1,5 +1,6 @@
 import { useRef,useEffect,useState } from 'react';
 import { useSelector,useDispatch } from 'react-redux';
+import {Link} from "react-router-dom"
 import {
   getDownloadURL,
   getStorage,
@@ -191,6 +192,14 @@ export default function Profile() {
         >
           {loading?"درحال بروزرسانی":"بروزرسانی"}
         </button>
+        {/* ===================================================== link to create list */}
+
+        <Link
+          className='bg-green-700 text-white p-3 rounded-lg uppercase text-center hover:opacity-95'
+          to={'/create-listing'}
+        >
+          ساختن لیست
+        </Link>
       </form>
 
 
