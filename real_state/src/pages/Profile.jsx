@@ -142,13 +142,32 @@ export default function Profile() {
         setShowListingsError(true);
         return;
       }
-
+      
       setUserListings(data);
     } catch (error) {
       setShowListingsError(true);
     }
   };
   
+  // ============================================================ handleDeleteListing
+  const handleListingDelete = async (listingId) => {
+    try {
+      const res = await fetch(`/api/listing/delete/${listingId}`, {
+        method: 'DELETE',
+      });
+      const data = await res.json();
+      if (data.success === false) {
+        console.log(data.message);
+        return;
+      }
+
+      setUserListings((prev) =>
+        prev.filter((listing) => listing._id !== listingId)
+      );
+    } catch (error) {
+      console.log(error.message);
+    }
+  } 
   return (
     <div className='p-3 max-w-lg mx-auto'>
       <h1 className='text-3xl font-semibold text-center my-7'>پروفایل</h1>
@@ -271,8 +290,9 @@ export default function Profile() {
               </Link>
 
               <div className='flex flex-col item-center'>
+                {/* ============================================================after delet listing */}
                 <button
-                  // onClick={() => handleListingDelete(listing._id)}
+                  onClick={() => handleListingDelete(listing._id)}
                   className='text-red-700 uppercase'
                 >
                   خذف
