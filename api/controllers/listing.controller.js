@@ -38,7 +38,7 @@ export const updateListing=async(req,res,next)=>{
         return next(errorHandler(404,"لیست پیدا نشد"))
     }
 
-    if(req.user.id!== req.params.id){
+    if(req.user.id!== listing.userRef){
         return next(errorHandler(401,"شما فقد میتوانید اکوانت خویش را بروزرسانی کنید"))
     }
 
