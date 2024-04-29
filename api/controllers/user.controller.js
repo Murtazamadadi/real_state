@@ -65,3 +65,19 @@ export const getUserListings= async(req,res,next)=>{
     return next(errorHandler(401,"شما فقد متوانید لیست که خود ایجاد کرده اید را بیبنید"))
   }
 }
+
+
+export const getUser= async(req,res,next)=>{
+  try{
+    const user=await User.findById(req.params.id)
+    if(!user){
+      return next(errorHandler(404,"کاربر وجود ندارد"))
+    }
+
+    const {password: pass,...rest} = user._doc;
+
+    res.status(200).json(user)
+  }catch(error){
+    next(error)
+  }
+}
